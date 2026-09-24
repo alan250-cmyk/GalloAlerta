@@ -9,14 +9,64 @@ let admin = false;
 /*  */
 let alert_error = `
     <div class="alert alert-danger" role="alert">
-        Hubo un error al llamar a la API.
-    </div>
+        Hubo un error al llamar a la API de Gallo Alerta. Inténtelo de nuevo más tarde.
+     </div>
 `;
 let spinner = `
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 `;
+
+// Source - https://stackoverflow.com/a/39914235
+// Posted by Dan Dascalescu, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-09-24, License - CC BY-SA 4.0
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function reportarIncidente(e)
+{
+    e.preventDefault();
+
+    const boton = document.getElementById("boton");
+    const mensaje = document.getElementById('mensaje');
+    const formulario = document.getElementsByTagName('form')[0];
+
+    boton.classList.add('disabled');
+    mensaje.innerHTML = spinner;
+
+    const asunto = document.getElementById('asunto').value;
+    const descripcion = document.getElementById('detalles').value;
+    const ubicacion = document.getElementById('lugar').value;
+
+    let pedido = fetch(
+        api_incidentes,
+        {
+            method: 'POST',
+            headers: api_headers,
+            body: JSON.stringify({
+                "asunto": asunto,
+                "descripcion": descripcion,
+                "ubicacion": ubicacion
+            })
+        }
+    );
+
+    pedido.then(async json => {
+        document.body.removeAttribute(mensaje);
+        formulario.outerHTML = `
+        <div class="alert alert-success" role="alert">
+            Su incidente fue registrado exitosamente. En instantes será redirigido a la página de incidentes.
+        </div>
+        `;
+        await sleep(1500);
+        window.location.replace("incidentes.html");
+    });
+
+    pedido.catch(e => {
+        mensaje.innerHTML = alert_error;
+        boton.classList.remove('disabled');
+    });
+}
 
 async function adminLogin(e)
 {
@@ -142,11 +192,7 @@ async function paginaDetalles()
     let id = obtenerParametro("id");
 
     let detalles = document.getElementById("detalles");
-    detalles.innerHTML = `
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    `;
+    detalles.innerHTML = spinner;
     
     let pedido = fetch(api_incidentes + `/${id}`, { headers: api_headers }).then(response => response.json());
 
