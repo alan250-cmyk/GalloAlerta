@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="layout.js"></script>
+    <title>Gestionar administradores - Gallo Alerta</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar bg-danger sticky-top p-2">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="inicio.html">
+                <img src="img/logo_white.png" alt="Logo" width="30" height="24"
+                    class="d-inline-block align-text-top object-fit-contain me-1">
+                Gallo Alerta
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge rounded-pill text-bg-light">admin123</span>
+                <a class="btn btn-danger" href="admins.html">
+                    <i class="bi bi-person-fill-gear me-1"></i>
+                    Gestionar admins
+                </a>
+                <button class="btn btn-danger">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Cerrar sesión
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-secondary text-light p-5">
+        <h1>Gestionar administradores</h1>
+        <h5>Gestione usuarios con permiso para moderar y resolver incidentes.</h5>
+    </div>
+
+    <div class="m-5">
+        <div class="overflow-auto">
+            <h3>Administradores registrados</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>N.º</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Administrador Principal</td>
+                        <td>admin@galloalerta.com</td>
+                        <td>admin1234</td>
+                        <td><span class="badge rounded-pill text-bg-success">Activo</span></td>
+                        <td>
+                            <div class="d-flex gap-1 flex-wrap">
+                                <button class="btn btn-warning">
+                                    <i class="bi bi-ban"></i>
+                                </button>
+                                <button class="btn btn-danger">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Registrar un nuevo administrador</h3>
+        <form>
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col">
+                        <label for="nombape" class="form-label">Nombre y apellido</label>
+                        <input type="text" id="nombape" class="form-control" placeholder="Ejemplo: Carlos Gómez" required>
+                    </div>
+                    <div class="col">
+                        <label for="email" class="form-label">Dirección de correo electrónico</label>
+                        <input type="email" class="form-control" id="email" placeholder="Ejemplo: cgomez@galloalerta.com" required>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col">
+                        <label for="usuario" class="form-label">Nombre de usuario</label>
+                        <input type="text" id="usuario" class="form-control" placeholder="Ejemplo: cgomez" required>
+                    </div>
+                    <div class="col">
+                        <label for="contra" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="contra" required>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-danger">Registrar nuevo administrador</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="inicio.html" class="nav-link px-2 text-body-secondary">Inicio</a></li>
+                <li class="nav-item"><a href="incidentes.html" class="nav-link px-2 text-body-secondary">Incidentes</a>
+                </li>
+                <li class="nav-item"><a href="reportar.html" class="nav-link px-2 text-body-secondary">Reportar
+                        incidente</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Normas</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Términos y condiciones</a>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Política de privacidad</a>
+                </li>
+            </ul>
+
+            <div class="d-flex justify-content-between gap-3">
+                <p class="text-body-secondary">© 2026 Grupo Salamanca. Todos los derechos reservados.</p>
+                <div class="d-flex gap-3">
+                    <a href="#"><i class="bi bi-facebook fs-3"></i></a>
+                    <a href="#"><i class="bi bi-instagram fs-3"></i></a>
+                    <a href="#"><i class="bi bi-twitter-x fs-3"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
