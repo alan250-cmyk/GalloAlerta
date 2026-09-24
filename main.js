@@ -6,7 +6,6 @@ const api_headers = {
 
 let admin = false;
 
-/*  */
 let alert_error = `
     <div class="alert alert-danger" role="alert">
         Hubo un error al llamar a la API de Gallo Alerta. Inténtelo de nuevo más tarde.
@@ -197,6 +196,16 @@ async function paginaDetalles()
     let pedido = fetch(api_incidentes + `/${id}`, { headers: api_headers }).then(response => response.json());
 
     pedido.then(incidente => {
+        if (incidente.message)
+        {
+            detalles.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    ${incidente.message}
+                </div>
+                `;
+                return;
+        }
+
         let estado = '<span class="badge rounded-pill text-bg-danger">No resuelto</span>';
         if (incidente.resuelto == 1) estado = '<span class="badge rounded-pill text-bg-success">Resuelto</span>';
 

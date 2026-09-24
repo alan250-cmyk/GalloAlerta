@@ -89,6 +89,8 @@ app.get('/incidentes/:id', (req, res) => {
     const id = req.params.id;
     db.query('SELECT * FROM incidentes WHERE id = ?', id, (err, rows) => {
         if (err) throw err;
+        if (rows.length == 0)
+            return res.status(404).json({ message: 'El incidente especificado no existe.' });
         res.json(rows[0]);
     });
 });
