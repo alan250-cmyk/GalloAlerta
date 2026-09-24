@@ -17,7 +17,7 @@
 
     <!-- Formulario -->
     <div class="m-5">
-        <form>
+        <form onsubmit="adminLogin(event)" class="mb-3">
             <div class="mb-3">
                 <label for="usuario" class="form-label">Nombre de usuario</label>
                 <input type="text" class="form-control" id="usuario" required>
@@ -26,8 +26,9 @@
                 <label for="contra" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" id="contra" required>
             </div>
-            <button type="submit" class="btn btn-danger">Iniciar sesión</button>
+            <button type="submit" id="botonlogin" class="btn btn-danger">Iniciar sesión</button>
         </form>
+        <div id="mensaje"></div>
     </div>
 
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>

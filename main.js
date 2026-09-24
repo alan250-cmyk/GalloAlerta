@@ -1,14 +1,15 @@
-const api_incidentes = "http://localhost:3000/api/incidentes";
+const api_login = "http://localhost:3000/login"
+const api_incidentes = "http://localhost:3000/incidentes";
 const api_headers = {
     "Content-type": "application/json"
 }
 
-let admin = true;
+let admin = false;
 
 /*  */
 let alert_error = `
     <div class="alert alert-danger" role="alert">
-        Hubo un error al intentar obtener los datos.
+        Hubo un error al llamar a la API.
     </div>
 `;
 let spinner = `
@@ -16,6 +17,43 @@ let spinner = `
         <span class="visually-hidden">Loading...</span>
     </div>
 `;
+
+async function adminLogin(e)
+{
+    e.preventDefault();
+
+    const boton = document.getElementById('botonlogin');
+    const mensaje = document.getElementById('mensaje');
+
+    boton.classList.add('disabled');
+    mensaje.innerHTML = spinner;
+
+    const usuario = document.getElementById('usuario').value.trim();
+    const contra = document.getElementById('contra').value;
+
+    let pedido = fetch(
+        api_login,
+        {
+            method: 'POST',
+            headers: api_headers,
+            body: JSON.stringify({
+                "nombreusuario": usuario,
+                "contra": contra
+            })
+        }
+    );
+
+    pedido.then(json => {
+        console.log(json);
+        mensaje.innerHTML = json;
+        boton.classList.remove('disabled');
+    });
+
+    pedido.catch(e => {
+        mensaje.innerHTML = alert_error;
+        boton.classList.remove('disabled');
+    });
+}
 
 async function paginaIncidentes()
 {
@@ -84,7 +122,7 @@ async function paginaIncidentes()
     });
 
     //Mostrar si hubo un error
-    pedido.catch(e => {
+    pedido.catch(() => {
         tabla.outerHTML = alert_error;
         num_reportados.innerHTML = "?";
         num_sinresolver.innerHTML = "?";
