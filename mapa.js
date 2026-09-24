@@ -9,8 +9,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 //Definir límites de Morón y zoom mínimo
 map.setMaxBounds([
-    [-34.702, -58.645], // Suroeste
-    [-34.637, -58.594]  // Noreste
+    [-34.7010, -58.6400], // Suroeste
+    [-34.6364, -58.5930]  // Noreste
 ]);
 map.options.maxBoundsViscosity = 1;
 map.setMinZoom(14);
