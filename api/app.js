@@ -54,7 +54,11 @@ app.post('/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.json({ message: 'Inicio de sesión exitoso', token });
+        res.json({
+            "nombre": usuario.nombre,
+            "nombreusuario": usuario.nombreusuario,
+            token
+        });
     });
 });
 

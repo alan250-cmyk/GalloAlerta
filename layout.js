@@ -8,14 +8,14 @@
         </a>
     `;
 
-    if (admin) botones = `
+    if (admin != null) botones = `
         <div class="d-flex align-items-center gap-2">
-            <span class="badge rounded-pill text-bg-light">admin123</span>
+            <span class="badge rounded-pill text-bg-light">${admin.nombre}</span>
             <a class="btn btn-danger" href="admins.html">
                 <i class="bi bi-person-fill-gear me-1"></i>
                 Gestionar admins
             </a>
-            <button class="btn btn-danger">
+            <button class="btn btn-danger" onclick="cerrarSesion()">
                 <i class="bi bi-box-arrow-right me-1"></i>
                 Cerrar sesión
             </button>

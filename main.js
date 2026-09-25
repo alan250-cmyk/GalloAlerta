@@ -3,8 +3,7 @@ const api_incidentes = "http://localhost:3000/incidentes";
 const api_headers = {
     "Content-type": "application/json"
 }
-
-let admin = false;
+let admin = JSON.parse(sessionStorage.getItem("galloalerta_admin"));
 
 let alert_error = `
     <div class="alert alert-danger" role="alert">
@@ -73,6 +72,7 @@ async function adminLogin(e)
 
     const boton = document.getElementById('botonlogin');
     const mensaje = document.getElementById('mensaje');
+    const formulario = document.getElementsByTagName('form')[0];
 
     boton.classList.add('disabled');
     mensaje.innerHTML = spinner;
@@ -92,16 +92,42 @@ async function adminLogin(e)
         }
     );
 
-    pedido.then(json => {
-        console.log(json);
-        mensaje.innerHTML = json;
-        boton.classList.remove('disabled');
-    });
+    pedido.then(data => data.json().then(async json => {
+        if (json.token != null)
+        {
+            mensaje.outerHTML = ``;
+            formulario.outerHTML = `
+            <div class="alert alert-success" role="alert">
+                Sesión iniciada con éxito. En instantes será redirigido a la página de incidentes.
+            </div>
+            `;
+            admin = json;
+            sessionStorage.setItem("galloalerta_admin", JSON.stringify(admin));
+
+            await sleep(1500);
+            window.location.replace("incidentes.html");
+        }
+        else
+        {
+            mensaje.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    ${json.message}
+                </div>
+            `;
+            boton.classList.remove('disabled');
+        }
+    }));
 
     pedido.catch(e => {
         mensaje.innerHTML = alert_error;
         boton.classList.remove('disabled');
     });
+}
+
+function cerrarSesion()
+{
+    sessionStorage.removeItem('galloalerta_admin');
+    window.location.reload();
 }
 
 async function paginaIncidentes()
@@ -126,16 +152,19 @@ async function paginaIncidentes()
 
     //Mostrar los datos recibidos
     pedido.then(json => {
-        //console.log(json);
+        let columnas = `
+            <th>N.º</th>
+            <th>Ubicación</th>
+            <th>Asunto</th>
+            <th>Fecha y hora</th>
+            <th>Estado</th>
+        `;
+        if (admin != null) columnas += `<th>Acciones</th>`
 
         tabla.innerHTML = `
             <thead>
                 <tr>
-                    <th>N.º</th>
-                    <th>Ubicación</th>
-                    <th>Asunto</th>
-                    <th>Fecha y hora</th>
-                    <th>Estado</th>
+                    ${columnas}
                 </tr>
             </thead>
             <tbody>
@@ -152,13 +181,39 @@ async function paginaIncidentes()
             let estado = '<span class="badge rounded-pill text-bg-danger">No resuelto</span>';
             if (incidente.resuelto) estado = '<span class="badge rounded-pill text-bg-success">Resuelto</span>';
 
-            tabla.tBodies[0].innerHTML += `
+            let filas = `
                 <td><a href="detalles.html?id=${incidente.id}">${incidente.id}</a></td>
                 <td>${incidente.ubicacion}</td>
                 <td>${incidente.asunto}</td>
                 <td>${incidente.fecha}</td>
                 <td>${estado}</td>
             `;
+
+            if (admin != null)
+            {
+                let boton_resolver = `
+                    <button class="btn btn-success">
+                        <i class="bi bi-clipboard2-check-fill"></i>
+                    </button>
+                `;
+                if (incidente.resuelto) boton_resolver = `
+                    <button class="btn btn-outline-secondary" disabled>
+                        <i class="bi bi-clipboard2-check-fill"></i>
+                    </button>
+                `;
+                filas += `
+                    <td>
+                        <div class="d-flex gap-1 flex-wrap">
+                            <button class="btn btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                            ${boton_resolver}
+                        </div>
+                    </td>
+                `;
+            }
+
+            tabla.tBodies[0].innerHTML += filas;
 
             if (incidente.latitud != null && incidente.longitud != null)
             {
@@ -220,7 +275,7 @@ async function paginaDetalles()
                 <div class="alert alert-danger" role="alert">
                     ${incidente.message}
                 </div>
-                `;
+            `;
                 return;
         }
 
