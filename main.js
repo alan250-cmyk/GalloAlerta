@@ -150,7 +150,7 @@ async function paginaIncidentes()
         for (let incidente of json) {
 
             let estado = '<span class="badge rounded-pill text-bg-danger">No resuelto</span>';
-            if (incidente.resuelto == 1) estado = '<span class="badge rounded-pill text-bg-success">Resuelto</span>';
+            if (incidente.resuelto) estado = '<span class="badge rounded-pill text-bg-success">Resuelto</span>';
 
             tabla.tBodies[0].innerHTML += `
                 <td><a href="detalles.html?id=${incidente.id}">${incidente.id}</a></td>
@@ -159,6 +159,24 @@ async function paginaIncidentes()
                 <td>${incidente.fecha}</td>
                 <td>${estado}</td>
             `;
+
+            if (incidente.latitud != null && incidente.longitud != null)
+            {
+                let color = '#c00000';
+                if (incidente.resuelto) color = '#00a000';
+
+                L.circleMarker([incidente.latitud, incidente.longitud], {
+                    color: 'white',
+                    fillColor: color,
+                    fillOpacity: 1,
+                    radius: 7.5
+                }).addTo(map).bindPopup(`
+                    <span class="d-flex align-content-center gap-1"><b>Incidente n.° ${incidente.id}</b>${estado}</span>
+                    ${incidente.asunto}
+                    <br>
+                    <span class="text-secondary">${incidente.ubicacion}</span>
+                    `);
+            }
 
             reportados += 1;
             if (incidente.resuelto == 0) sinresolver += 1;
